@@ -1,5 +1,17 @@
 import HBInit from 'haxball.js';
 import fs from 'fs';
+import http from 'http';
+
+// Servidor web mínimo para que Render no cierre la aplicación
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Servidor de Haxball COBRA x3 activo\n');
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Servidor HTTP escuchando en el puerto ${PORT}`);
+});
 
 const DB_FILE = './stats.json';
 let db = { players: {} };
@@ -40,13 +52,10 @@ async function startServer() {
       public: true,
       noPlayer: true,
       token: "thr1.AAAAAGrRAxTWuEQg-Fc5TA.FvxW7PgSzCw",
-      geo: { code: "ar", lat: -31.6333, lon: -60.7 }, // Configurado específicamente para Argentina (Santa Fe)
+      geo: { code: "ar", lat: -31.6333, lon: -60.7 }
     });
 
-    console.log("==================================================");
-    console.log(" ¡SERVIDOR DE LA COBRA ONLINE EN ARGENTINA!");
-    console.log(" Mantén esta pantalla abierta para que la sala funcione.");
-    console.log("==================================================");
+    console.log("¡SERVIDOR DE LA COBRA ONLINE Y PUBLICADO EN ARGENTINA!");
 
     let redStreak = 0;
     let blueStreak = 0;
@@ -126,9 +135,6 @@ async function startServer() {
 
       return true;
     };
-
-    // Mantiene el proceso vivo indefinidamente de forma elegante
-    await new Promise(() => {});
 
   } catch (err) {
     console.error("Error al iniciar la sala:", err);
